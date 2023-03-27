@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Count, Product } from 'src/app/models/product';
 import { ProductCart } from 'src/app/models/product-cart';
@@ -14,13 +14,8 @@ export class CartComponent {
   cartProducts: ProductCart[] = [];
   count: string[] = Count;
   totalPrice: number = 0;
-  firstName: string | undefined;
-  lastName: string | undefined;
-  email: string | undefined;
-  phoneNumber: string | number | undefined;
-  cartNumber: string | number | undefined;
-  cartCsv: string | number | undefined;
-  cartDate: string | number | undefined;
+
+  @Output() success = new EventEmitter();
 
   constructor(private route: Router, private productServices: ProductsService) { }
 
@@ -33,15 +28,17 @@ export class CartComponent {
     this.productServices.removeFromCart(product);
     this.cartProducts = this.productServices.getCart();
     this.calculateTotalPrice();
+    alert(`The item '${product.name}' has been removed from the cart.`)
   }
 
   calculateTotalPrice(): void {
     this.totalPrice = this.cartProducts.reduce((total, product) => total + product.price * Number(product.option && product.option), 0);
   }
 
-  checkoutSuccess(firstName: string): void {
+  onSubmit(data: any): void {
+    console.log(data);
     this.productServices.clearCart();
-    this.route.navigateByUrl(`checkout/${this.firstName}/${this.totalPrice}`);
+    this.route.navigateByUrl(`checkout/${data?.firstName}/${data?.totalPrice}`);
   }
 
   selectChange(id: number, event: any): void {
@@ -50,6 +47,6 @@ export class CartComponent {
     cartIdx != -1 && this.cartProducts.length > 0 ? this.cartProducts[cartIdx].option = selectedOption : null;
     this.cartProducts.length > 0 ? this.productServices.addToCart(this.cartProducts) : null;
     this.calculateTotalPrice()
-
+    alert(`the product quantity is updated`)
   }
 }

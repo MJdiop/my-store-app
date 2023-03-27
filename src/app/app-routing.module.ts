@@ -6,11 +6,11 @@ import { ProductDetailComponent } from './components/products/product-detail/pro
 import { ProductsComponent } from './components/products/products.component';
 
 const routes: Routes = [
-  { path: '**', redirectTo: '/' },
   { path: '', component: ProductsComponent },
   { path: 'product-detail/:id', component: ProductDetailComponent },
   { path: 'cart', component: CartComponent },
-  { path: 'checkout/:username/:totalprice', component: CheckoutSuccessComponent }
+  { path: 'checkout/:username/:totalprice', component: CheckoutSuccessComponent },
+  { path: '**', redirectTo: '/' },
 ];
 
 @NgModule({

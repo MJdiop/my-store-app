@@ -11,8 +11,9 @@ import { ProductDetailComponent } from './components/products/product-detail/pro
 import { CartComponent } from './components/cart/cart.component';
 import { CheckoutSuccessComponent } from './components/checkout/checkout-success/checkout-success.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { CheckoutFormComponent } from './components/checkout/checkout-form/checkout-form.component';
 
 @NgModule({
   declarations: [
@@ -24,13 +25,15 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
     ProductDetailComponent,
     CartComponent,
     CheckoutSuccessComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    CheckoutFormComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
