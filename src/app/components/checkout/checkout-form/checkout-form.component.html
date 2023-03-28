@@ -2,7 +2,7 @@
   <div class="mx-auto max-w-lg px-4 lg:px-8">
     <form
       class="grid grid-cols-6 gap-4"
-      [formGroup]="createForm"
+      #createForm="ngForm"
       (ngSubmit)="onSubmit()"
     >
       <div class="col-span-3">
@@ -12,40 +12,18 @@
 
         <input
           type="text"
-          formControlName="firstName"
-          [ngClass]="{
-            'text-red-300': submited && FirstName?.touched && FirstName?.invalid
-          }"
+          required
+          minlength="4"
+          maxlength="10"
+          name="firstName"
+          [(ngModel)]="firstName"
+          (ngModelChange)="firstNameChange($event)"
           class="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
         />
 
-        <div
-          *ngIf="
-            FirstName &&
-            FirstName?.invalid &&
-            (FirstName?.dirty || FirstName?.touched)
-          "
-          class="text-red-300 mt-2"
-        >
-          <div
-            class="text-red-300 mt-2"
-            *ngIf="FirstName && FirstName?.errors?.['required']"
-          >
-            First Name is required.
-          </div>
-          <div
-            class="text-red-300 mt-2"
-            *ngIf="FirstName && FirstName?.errors?.['minlength']"
-          >
-            Name must be at least 4 characters long.
-          </div>
-
-          <div
-            class="text-red-300 mt-2"
-            *ngIf="FirstName && FirstName?.errors?.['minlength']"
-          >
-            Name must be at least 4 characters long.
-          </div>
+        <div *ngIf="error.firstName" class="text-red-300 mt-2">
+          First Name is required. & must be at least 4 characters long. & must
+          not exceed 10 characters.
         </div>
       </div>
 
@@ -56,40 +34,17 @@
 
         <input
           type="text"
-          formControlName="lastName"
-          [ngClass]="{
-            'text-red-300': submited && LastName?.touched && LastName?.invalid
-          }"
+          name="lastName"
+          required
+          minlength="4"
+          maxlength="10"
+          [(ngModel)]="lastName"
+          (ngModelChange)="lastNameChange($event)"
           class="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
         />
-
-        <div
-          *ngIf="
-            LastName &&
-            LastName?.invalid &&
-            (LastName?.dirty || LastName?.touched)
-          "
-          class="text-red-300 mt-2"
-        >
-          <div
-            class="text-red-300 mt-2"
-            *ngIf="LastName && LastName?.errors?.['required']"
-          >
-            Last Name is required.
-          </div>
-          <div
-            class="text-red-300 mt-2"
-            *ngIf="LastName && LastName?.errors?.['minlength']"
-          >
-            Name must be at least 4 characters long.
-          </div>
-
-          <div
-            class="text-red-300 mt-2"
-            *ngIf="LastName && LastName?.errors?.['minlength']"
-          >
-            Name must be at least 4 characters long.
-          </div>
+        <div *ngIf="error.lastName" class="text-red-300 mt-2">
+          Last Name is required. & must be at least 4 characters long. & must
+          not exceed 10 characters.
         </div>
       </div>
 
@@ -100,45 +55,18 @@
 
         <input
           type="text"
-          formControlName="phoneNumber"
-          [ngClass]="{
-            'text-red-300':
-              submited && PhoneNumber?.touched && PhoneNumber?.invalid
-          }"
+          required
+          minlength="9"
+          maxlength="9"
+          name="phoneNumber"
+          placeholder="00 000 00 00 0"
+          [(ngModel)]="phoneNumber"
+          (ngModelChange)="phoneNumberChange($event)"
           class="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
         />
 
-        <div
-          *ngIf="
-            PhoneNumber &&
-            PhoneNumber?.invalid &&
-            (PhoneNumber?.dirty || PhoneNumber?.touched)
-          "
-          class="text-red-300 mt-2"
-        >
-          <div
-            class="text-red-300 mt-2"
-            *ngIf="PhoneNumber && PhoneNumber?.errors?.['required']"
-          >
-            Phone Number is required.
-          </div>
-          <div
-            class="text-red-300 mt-2"
-            *ngIf="PhoneNumber && PhoneNumber?.errors?.['minlength']"
-          >
-            Phone Number must be at least 9 characters long.
-          </div>
-
-          <div
-            class="text-red-300 mt-2"
-            *ngIf="PhoneNumber && PhoneNumber?.errors?.['minlength']"
-          >
-            Phone Number must be at least 9 characters long.
-          </div>
-
-          <div *ngIf="PhoneNumber && PhoneNumber?.errors?.['pattern']">
-            Number invalid
-          </div>
+        <div *ngIf="error.phoneNumber" class="text-red-300 mt-2">
+          Invalid phone number & Phone Number must be at least 9 characters long
         </div>
       </div>
 
@@ -153,45 +81,19 @@
 
             <input
               type="text"
-              formControlName="cartNumber"
-              [ngClass]="{
-                'text-red-300':
-                  submited && CartNumber?.touched && CartNumber?.invalid
-              }"
+              name="cartNumber"
+              required
+              minlength="16"
+              maxlength="16"
+              [(ngModel)]="cartNumber"
+              (ngModelChange)="cartNumberChange($event)"
               placeholder="Card Number"
               class="relative mt-1 w-full rounded-t-md border-gray-200 focus:z-10 sm:text-sm"
             />
 
-            <div
-              *ngIf="
-                CartNumber &&
-                CartNumber?.invalid &&
-                (CartNumber?.dirty || CartNumber?.touched)
-              "
-              class="text-red-300 mt-2"
-            >
-              <div *ngIf="CartNumber && CartNumber?.errors?.['pattern']">
-                Number invalid
-              </div>
-              <div
-                class="text-red-300 mt-2"
-                *ngIf="CartNumber && CartNumber?.errors?.['required']"
-              >
-                Cart Number is required.
-              </div>
-              <div
-                class="text-red-300 mt-2"
-                *ngIf="CartNumber && CartNumber?.errors?.['minlength']"
-              >
-                Cart Number must be at least 16 characters long.
-              </div>
-
-              <div
-                class="text-red-300 mt-2"
-                *ngIf="CartNumber && CartNumber?.errors?.['minlength']"
-              >
-                Cart Number must be at least 16 characters long.
-              </div>
+            <div *ngIf="error.cartNumber" class="text-red-300 mt-2">
+              Invalid card number & Card Number must be at least 16 characters
+              long
             </div>
           </div>
 
@@ -201,45 +103,17 @@
 
               <input
                 type="text"
-                formControlName="cartDate"
-                [ngClass]="{
-                  'text-red-300':
-                    submited && CartDate?.touched && CartDate?.invalid
-                }"
+                name="cartDate"
+                required
+                maxlength="4"
+                [(ngModel)]="cartDate"
+                (ngModelChange)="cartDateChange($event)"
                 placeholder="Expiry Date"
                 class="relative w-full rounded-bl-md border-gray-200 focus:z-10 sm:text-sm"
               />
 
-              <div
-                *ngIf="
-                  CartDate &&
-                  CartDate?.invalid &&
-                  (CartDate?.dirty || CartDate?.touched)
-                "
-                class="text-red-300 mt-2"
-              >
-                <div *ngIf="CartDate && CartDate?.errors?.['pattern']">
-                  Number invalid
-                </div>
-                <div
-                  class="text-red-300 mt-2"
-                  *ngIf="CartDate &&  CartDate?.errors?.['required']"
-                >
-                  Cart Date is required.
-                </div>
-                <div
-                  class="text-red-300 mt-2"
-                  *ngIf="CartDate &&  CartDate?.errors?.['minlength']"
-                >
-                  Cart Date must be at least 4 characters long.
-                </div>
-
-                <div
-                  class="text-red-300 mt-2"
-                  *ngIf="CartDate &&  CartDate?.errors?.['minlength']"
-                >
-                  Cart Date must be at least 4 characters long.
-                </div>
+              <div *ngIf="error.cartDate" class="text-red-300 mt-2">
+                Invalid card date & Card Date must be at least 4 characters long
               </div>
             </div>
 
@@ -248,45 +122,17 @@
 
               <input
                 type="text"
-                formControlName="cartCsv"
-                [ngClass]="{
-                  'text-red-300':
-                    submited && CartCsv?.touched && CartCsv?.invalid
-                }"
+                name="cartCsv"
+                required
+                maxlength="3"
+                [(ngModel)]="cartCsv"
+                (ngModelChange)="cartCsvChange($event)"
                 placeholder="CVC"
                 class="relative w-full rounded-br-md border-gray-200 focus:z-10 sm:text-sm"
               />
 
-              <div
-                *ngIf="
-                  CartCsv &&
-                  CartCsv?.invalid &&
-                  (CartCsv?.dirty || CartCsv?.touched)
-                "
-                class="text-red-300 mt-2"
-              >
-                <div *ngIf="CartCsv && CartCsv?.errors?.['pattern']">
-                  Number invalid
-                </div>
-                <div
-                  class="text-red-300 mt-2"
-                  *ngIf="CartCsv &&  CartCsv?.errors?.['minlength']"
-                >
-                  Cart Date must be at least 4 characters long.
-                </div>
-
-                <div
-                  class="text-red-300 mt-2"
-                  *ngIf="CartCsv &&  CartCsv?.errors?.['minlength']"
-                >
-                  Cart Date must be at least 4 characters long.
-                </div>
-                <div
-                  class="text-red-300 mt-2"
-                  *ngIf="CartCsv && CartCsv?.errors?.['required']"
-                >
-                  Cart Csv is required.
-                </div>
+              <div *ngIf="error.cartCsv" class="text-red-300 mt-2">
+                Invalid card csv & Card Csv must be at least 3 characters long
               </div>
             </div>
           </div>
@@ -295,7 +141,7 @@
 
       <div class="col-span-6">
         <button
-          [disabled]="createForm.invalid"
+          [disabled]="!createForm.valid"
           type="submit"
           class="block w-full rounded-md bg-black p-2.5 text-sm text-white transition hover:shadow-lg"
         >

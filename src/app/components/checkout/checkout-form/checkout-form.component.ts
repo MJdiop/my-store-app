@@ -7,67 +7,93 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   styleUrls: ['./checkout-form.component.scss']
 })
 export class CheckoutFormComponent {
-  createForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    lastName: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    phoneNumber: new FormControl('', [Validators.required, Validators.pattern("[0-9 ]*"), Validators.maxLength(10), Validators.maxLength(10)]),
-    cartNumber: new FormControl('', [Validators.required, Validators.pattern("[0-9 ]*"), Validators.minLength(16), Validators.maxLength(16)]),
-    cartCsv: new FormControl('', [Validators.required, Validators.pattern("[0-9 ]*"), Validators.maxLength(3)]),
-    cartDate: new FormControl('', [Validators.required, Validators.pattern("[0-9 ]*"), Validators.maxLength(4)])
-  });
+  // createForm = new FormGroup({
+  //   firstName: new FormControl('', [Validators.required, Validators.minLength(4)]),
+  //   lastName: new FormControl('', [Validators.required, Validators.minLength(4)]),
+  //   phoneNumber: new FormControl('', [Validators.required, Validators.pattern("[0-9 ]*"), Validators.maxLength(10), Validators.maxLength(10)]),
+  //   cartNumber: new FormControl('', [Validators.required, Validators.pattern("[0-9 ]*"), Validators.minLength(16), Validators.maxLength(16)]),
+  //   cartCsv: new FormControl('', [Validators.required, Validators.pattern("[0-9 ]*"), Validators.maxLength(3)]),
+  //   cartDate: new FormControl('', [Validators.required, Validators.pattern("[0-9 ]*"), Validators.maxLength(4)])
+  // });
+
   submited = false;
   @Output() success = new EventEmitter();
+
+  firstName = ''
+  lastName = ''
+  phoneNumber: any
+  cartNumber: any
+  cartCsv: any
+  cartDate: any
+
+  error = {
+    firstName: false,
+    lastName: false,
+    phoneNumber: false,
+    cartNumber: false,
+    cartCsv: false,
+    cartDate: false
+  }
 
   constructor(private fb: FormBuilder) { }
 
   onSubmit(): void {
     const formValues = {
-      firstName: this.createForm.get('firstName')?.value,
-      lastName: this.createForm.get('lastName')?.value,
-      email: this.createForm.get('email')?.value,
-      phoneNumber: this.createForm.get('phoneNumber')?.value,
-      cartNumber: this.createForm.get('cartNumber')?.value,
-      cartCsv: this.createForm.get('cartCsv')?.value,
-      cartDate: this.createForm.get('cartDate')?.value
+      firstName: this.firstName,
+      lastName: this.lastName,
+      phoneNumber: this.phoneNumber,
+      cartNumber: this.cartNumber,
+      cartCsv: this.cartCsv,
+      cartDate: this.cartDate
     }
 
     this.submited = true;
-    if (!formValues.firstName || !formValues.lastName || !formValues.cartNumber || !formValues.cartCsv || !formValues.cartNumber) {
-      alert('please make sure to fill in your information')
+
+    this.success.emit(formValues);
+
+  }
+
+  firstNameChange(val: any): void {
+    if (val.length === 0 || val.length < 4 || val.length > 10) {
+      this.error.firstName = true;
       return;
-    } else {
-
-      this.success.emit(formValues);
     }
+    this.error.firstName = false;
   }
-
-  get FirstName() {
-    return this.createForm.get('firstName');
+  cartCsvChange(val: any): void {
+    if (isNaN(val) || val.toString().length < 3) {
+      this.error.cartCsv = true;
+      return;
+    }
+    this.error.cartCsv = false;
   }
-
-  get LastName() {
-    return this.createForm.get('lastName');
+  cartDateChange(val: any): void {
+    if (isNaN(val) || val.toString().length < 4) {
+      this.error.cartDate = true;
+      return;
+    }
+    this.error.cartDate = false;
   }
-
-  get Email() {
-    return this.createForm.get('address');
+  cartNumberChange(val: any): void {
+    if (isNaN(val) || val.toString().length < 16) {
+      this.error.cartNumber = true;
+      return;
+    }
+    this.error.cartNumber = false;
   }
-
-  get PhoneNumber() {
-    return this.createForm.get('phoneNumber');
+  phoneNumberChange(val: number): void {
+    if (isNaN(val) || val.toString().length < 9) {
+      this.error.phoneNumber = true;
+      return;
+    }
+    this.error.phoneNumber = false;
   }
-
-  get CartNumber() {
-    return this.createForm.get('cartNumber');
+  lastNameChange(val: any): void {
+    if (val.length === 0 || val.length < 4 || val.length > 10) {
+      this.error.lastName = true;
+      return;
+    }
+    this.error.lastName = false;
   }
-
-  get CartCsv() {
-    return this.createForm.get('cartCsv');
-  }
-
-  get CartDate() {
-    return this.createForm.get('cartDate');
-  }
-
 
 }
