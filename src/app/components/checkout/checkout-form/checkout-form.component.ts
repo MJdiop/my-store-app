@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-checkout-form',
@@ -7,23 +7,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./checkout-form.component.scss']
 })
 export class CheckoutFormComponent {
-  createForm!: FormGroup;
+  createForm = new FormGroup({
+    firstName: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    lastName: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    phoneNumber: new FormControl('', [Validators.required, Validators.pattern("[0-9 ]*"), Validators.maxLength(10), Validators.maxLength(10)]),
+    cartNumber: new FormControl('', [Validators.required, Validators.pattern("[0-9 ]*"), Validators.minLength(16), Validators.maxLength(16)]),
+    cartCsv: new FormControl('', [Validators.required, Validators.pattern("[0-9 ]*"), Validators.maxLength(3)]),
+    cartDate: new FormControl('', [Validators.required, Validators.pattern("[0-9 ]*"), Validators.maxLength(4)])
+  });
   submited = false;
   @Output() success = new EventEmitter();
 
   constructor(private fb: FormBuilder) { }
-
-  ngOnInit(): void {
-    this.createForm = this.fb.group({
-      firstName: ['', Validators.required, Validators.minLength(4)],
-      lastName: ['', Validators.required, Validators.minLength(4)],
-      email: ['', Validators.required, Validators.email],
-      phoneNumber: ['', Validators.required, Validators.minLength(9), Validators.maxLength(9)],
-      cartNumber: ['', Validators.required, Validators.minLength(16), Validators.maxLength(16)],
-      cartCsv: ['', Validators.required, Validators.maxLength(3)],
-      cartDate: ['', Validators.required, Validators.maxLength(4)]
-    })
-  }
 
   onSubmit(): void {
     const formValues = {
@@ -35,9 +30,10 @@ export class CheckoutFormComponent {
       cartCsv: this.createForm.get('cartCsv')?.value,
       cartDate: this.createForm.get('cartDate')?.value
     }
+    console.log(this.createForm);
 
     this.submited = true;
-    if (!formValues.firstName || !formValues.lastName || !formValues.email || !formValues.cartNumber || !formValues.cartCsv || !formValues.cartNumber) {
+    if (!formValues.firstName || !formValues.lastName || !formValues.cartNumber || !formValues.cartCsv || !formValues.cartNumber) {
       alert('please make sure to fill in your information')
       return;
     } else {
