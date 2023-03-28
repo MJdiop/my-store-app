@@ -30,7 +30,6 @@ export class CheckoutFormComponent {
       cartCsv: this.createForm.get('cartCsv')?.value,
       cartDate: this.createForm.get('cartDate')?.value
     }
-    console.log(this.createForm);
 
     this.submited = true;
     if (!formValues.firstName || !formValues.lastName || !formValues.cartNumber || !formValues.cartCsv || !formValues.cartNumber) {

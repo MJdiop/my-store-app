@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Product } from 'src/app/models/product';
+import { Count, Product } from 'src/app/models/product';
 import { ProductCart } from 'src/app/models/product-cart';
 import { ProductsService } from 'src/app/servies/products.service';
 
@@ -12,7 +12,10 @@ import { ProductsService } from 'src/app/servies/products.service';
 export class ProductDetailComponent {
   products: Product[] = []
   product: Product = {} as Product
+  cartProducts: ProductCart[] = [];
   id: number | null = null
+  count: string[] = Count
+  totalPrice: number = 0;
 
   constructor(private route: ActivatedRoute, private productServices: ProductsService) { }
 
@@ -32,7 +35,6 @@ export class ProductDetailComponent {
   }
 
   addToCart(product: Product, event: any): void {
-    console.log(event.target[0].options, 'sfsd');
     let newProductCart: ProductCart[] = []
     let msg: string = ''
     let isOptionExist: boolean = false
@@ -61,5 +63,18 @@ export class ProductDetailComponent {
 
     !isOptionExist ? this.productServices.addToCart(newProductCart) : null
     alert(msg)
+  }
+
+  calculateTotalPrice(): void {
+    this.totalPrice = this.cartProducts.reduce((total, product) => total + product.price * Number(product.option && product.option), 0);
+  }
+
+  selectChange(id: number, event: any): void {
+    const selectedOption = event.target.options[event.target.options.selectedIndex].value;
+    const cartIdx = this.cartProducts.findIndex(cart => cart.id === id);
+    cartIdx != -1 && this.cartProducts.length > 0 ? this.cartProducts[cartIdx].option = selectedOption : null;
+    this.cartProducts.length > 0 ? this.productServices.addToCart(this.cartProducts) : null;
+    this.calculateTotalPrice()
+    alert(`the product quantity is updated`)
   }
 }

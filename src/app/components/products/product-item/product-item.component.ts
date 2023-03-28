@@ -21,7 +21,6 @@ export class ProductItemComponent {
   }
 
   addToCart(product: Product, event: any): void {
-
     let newProductCart: ProductCart[] = []
     let msg: string = ''
     let isOptionExist: boolean = false

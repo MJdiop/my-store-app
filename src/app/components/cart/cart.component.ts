@@ -36,9 +36,8 @@ export class CartComponent {
   }
 
   onSubmit(data: any): void {
-    console.log(data);
     this.productServices.clearCart();
-    this.route.navigateByUrl(`checkout/${data?.firstName}/${data?.totalPrice}`);
+    this.route.navigateByUrl(`checkout/${data?.firstName}/${this.totalPrice}`);
   }
 
   selectChange(id: number, event: any): void {

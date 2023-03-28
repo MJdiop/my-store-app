@@ -64,13 +64,16 @@
                 Qty
               </div>
               <select
+                (change)="selectChange(product.id, $event)"
                 class="cursor-pointer appearance-none rounded-xl border border-gray-200 pl-4 pr-8 h-14 flex items-end pb-1"
               >
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+                <option
+                  *ngFor="let option of count"
+                  [ngValue]="option"
+                  [selected]="option === '1'"
+                >
+                  {{ option }}
+                </option>
               </select>
 
               <svg
@@ -90,7 +93,7 @@
             </div>
 
             <button
-              type="button"
+              type="submit"
               class="h-14 px-6 font-semibold rounded-xl bg-teal-500 hover:bg-teal-600 text-white"
             >
               Add to Cart
